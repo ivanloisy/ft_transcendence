@@ -1,12 +1,11 @@
 DC_FILE = ./docker-compose.yml
 HOME = /home/$(USER)
-DOCKER_COMPOSE = docker-compose -p transcendence_network --file $(DC_FILE)
+DOCKER_COMPOSE = docker compose -p transcendence_network --file $(DC_FILE)
 
 TEST=`docker volume ls -q`
 
 all:
-	cp $(HOME)/.transcendenceEnv ./backend/nest
-	mv ./backend/nest/.transcendenceEnv backend/nest/.env
+	cp $(HOME)/ft_transcendence.env ./backend/nest/.env
 	mkdir -p ./frontend/volume
 	mkdir -p ./backend/volume
 	mkdir -p ./data/pgadmin

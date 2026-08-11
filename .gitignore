@@ -38,5 +38,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
-.transcendenceEnv
+ft_transcendence.env
 
