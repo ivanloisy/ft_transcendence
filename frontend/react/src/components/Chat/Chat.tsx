@@ -24,7 +24,7 @@ export const WebSocket = (): JSX.Element => {
   const [modalTitle, setModalTitle] = useState("");
   const [loaded, setLoaded] = useState("not ok");
   const [chanUser, setChanUser] = useState<Array<UserType>>([]);
-  const [url, setUrl] = useState<string>('');
+  const url = '';
   // const [lastChan, setLastChan] = useState<ChanType>();
   const {
     user,
@@ -42,6 +42,11 @@ export const WebSocket = (): JSX.Element => {
 // ================= UseEffects ===================
 
   useEffect((): () => void => {
+    const goHome = () => {
+      changeActiveRoom("");
+      setRoom("null");
+      navigate("/chat")
+    }
     socket.on('connect', () => {
     });
     socket.on("userJoinChannel", (obj: UserJoinChannelSendDto) => {
@@ -60,7 +65,7 @@ export const WebSocket = (): JSX.Element => {
         updateChanFromList(obj.chan, false);
       }
       getChan();
-      //window.location.replace("http://localhost:80/chat");
+      //window.location.replace("http://localhost:8080/chat");
       //navigate("/chat/")
     });
     if (chanList.length && user.auth_id !== undefined)
@@ -71,15 +76,16 @@ export const WebSocket = (): JSX.Element => {
       socket.off('chanDeleted');
       socket.off('userLeaveChannel');
     }
-  });
+  }, [socket, chanList, user, updateChanFromList, room]);
 
-  const goHome = () => {
-    changeActiveRoom("");
-    setRoom("null");
-    navigate("/chat")
-  }
+
 
   useEffect((): () => void => {
+    const goHome = () => {
+      changeActiveRoom("");
+      setRoom("null");
+      navigate("/chat")
+    }
     const handleMute = async (obj: MuteToChannelSendDto): Promise<void> => {
       if (obj.auth_id === user.auth_id) {
         try {
@@ -163,6 +169,7 @@ export const WebSocket = (): JSX.Element => {
     }
   }, [
     setError,
+    room,
     socket,
     updateAdminFromList,
     updateBannedFromList,
@@ -210,6 +217,7 @@ export const WebSocket = (): JSX.Element => {
     }
   }, [
       setError,
+      navigate,
     updateMutedFromList,
     updateBannedFromList,
     user,
@@ -220,7 +228,7 @@ export const WebSocket = (): JSX.Element => {
     getChan();
     const checkUrl: NodeJS.Timer = setInterval(() => {
       let url: string = document.URL
-      if (!document.URL.includes("localhost:80/chat"))
+      if (!document.URL.includes("localhost:8080/chat"))
         clearInterval(checkUrl);
       url = url.substring(url.lastIndexOf("/") + 1)
       if (url !== location) {

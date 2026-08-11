@@ -1,5 +1,7 @@
 Dockerfile
 .dockerignore
+.env
+*.env
 ${PWD}/react/node_modules/
 ${PWD}/react/dist
 npm-debug.log

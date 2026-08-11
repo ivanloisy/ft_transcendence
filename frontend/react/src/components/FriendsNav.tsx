@@ -6,7 +6,7 @@ import '../styles/components/friendsnav.css';
 import DisplayFriendsList from "./utils/DisplayFriendsList";
 import { Alert } from "react-bootstrap";
 import { io } from "socket.io-client";
-import { FriendUserReceiveDto, FriendUserSendDto } from "../dtos/friend-user.dto";
+import { FriendUserReceiveDto } from "../dtos/friend-user.dto";
 
 const socket = io('http://localhost:3000/update')
 class FriendsNav extends Component<{}, {

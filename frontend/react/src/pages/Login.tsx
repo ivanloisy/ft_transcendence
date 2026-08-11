@@ -35,12 +35,12 @@ const Login = (): JSX.Element => {
 		</map>
 		<div id="background-wrap">
 			{/* delete below before push */}
-			<a className="mb-2 mx-2" href="http://localhost:3000/auth/dummyconnect">
-				Letssss go
-  			</a>
+			{/* <a className="mb-2 mx-2" href="http://localhost:3000/auth/dummyconnect">
+			 	Letssss go
+  		 	</a>*/}
 			{/* delete above before push */}
 			<div>
-				<img alt="prout" useMap="#spongebobbg" className="clickable" src="http://localhost:80/pictures/bobhouse.png" width="auto" style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, margin: "auto"}}/>
+				<img alt="prout" useMap="#spongebobbg" className="clickable" src="http://localhost:8080/pictures/bobhouse.png" width="auto" style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, margin: "auto"}}/>
 			</div>
 			<div className="d-flex justify-content-center h-25 ">
 				<div className="bubble x-static align-self-center d-flex align-items-center justify-content-center"><p className="text-center">Knock Bob's<br/>house to login</p></div>

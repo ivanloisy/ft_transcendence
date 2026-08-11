@@ -1,11 +1,9 @@
 import { Component, createRef } from 'react';
-import { useNavigate } from "react-router-dom";
-import { socket, WebsocketProvider, WebsocketContext } from '../contexts/WebSocketContextGame';
+import { socket } from '../contexts/WebSocketContextGame';
 import Request from "../components/utils/Requests"
 import '../styles/pages/game.css'
 import ModalMatchWaiting from '../components/utils/ModalMatchWaiting';
 import { io } from 'socket.io-client';
-import { UserType } from "../types"
 import { AuthContext } from '../contexts/AuthProviderContext';
 const updateSocket = io("http://localhost:3000/update");
 
@@ -26,7 +24,7 @@ let gameOver = () => {
   socket.off('players')
   socket.off('onEndGame')
   updateSocket.emit('updateUser', {auth_id: settings.currentUser, status: 1})
-	window.location.href = "http://localhost:80/history"
+	window.location.href = "http://localhost:8080/history"
 }
 
 let joinRoom = async () => {
@@ -34,13 +32,13 @@ let joinRoom = async () => {
   let url = document.URL
   let index = url.lastIndexOf("/")
   if (index === -1) {
-    window.location.href = "http://localhost:80/history"
+    window.location.href = "http://localhost:8080/history"
   }
   else {
     url = url.substring(index + 1)
     let game: any = games.find((c:any) => c.id === url)
     if (game === undefined) {
-      window.location.href = "http://localhost:80/history"
+      window.location.href = "http://localhost:8080/history"
     }
     else
 			socket.emit('joinRoom', {"game":game, "auth_id": settings.currentUser})
@@ -51,11 +49,11 @@ const printGame = (ctx: any) => {
 	let y = 0;
   if (settings.spec === false) {
     let move = 0;
-    if (settings.up == 1)  {
+    if (settings.up === 1)  {
       movePlayer(ctx, -1, settings)
       move += 1;
     }
-    if (settings.down == 1) {
+    if (settings.down === 1) {
       movePlayer(ctx, 1, settings)
       move += 1;
     }
@@ -115,52 +113,52 @@ const start = (ctx: any) => {
     socket.on('newPoint', (room) => {
       switch (room.config.p1Score)
       {
-        case 0: score1.src = "http://localhost:80/icons/bob0.png"
+        case 0: score1.src = "http://localhost:8080/icons/bob0.png"
           break;
-        case 1: score1.src = "http://localhost:80/icons/bob1.png"
+        case 1: score1.src = "http://localhost:8080/icons/bob1.png"
           break;
-        case 2: score1.src = "http://localhost:80/icons/bob2.png"
+        case 2: score1.src = "http://localhost:8080/icons/bob2.png"
           break;
-        case 3: score1.src = "http://localhost:80/icons/bob3.png"
+        case 3: score1.src = "http://localhost:8080/icons/bob3.png"
           break;
-        case 4: score1.src = "http://localhost:80/icons/bob4.png"
+        case 4: score1.src = "http://localhost:8080/icons/bob4.png"
           break;
-        case 5: score1.src = "http://localhost:80/icons/bob5.png"
+        case 5: score1.src = "http://localhost:8080/icons/bob5.png"
           break;
-        case 6: score1.src = "http://localhost:80/icons/bob6.png"
+        case 6: score1.src = "http://localhost:8080/icons/bob6.png"
           break;
-        case 7: score1.src = "http://localhost:80/icons/bob7.png"
+        case 7: score1.src = "http://localhost:8080/icons/bob7.png"
           break;
-        case 8: score1.src = "http://localhost:80/icons/bob8.png"
+        case 8: score1.src = "http://localhost:8080/icons/bob8.png"
           break;
-        case 9: score1.src = "http://localhost:80/icons/bob9.png"
+        case 9: score1.src = "http://localhost:8080/icons/bob9.png"
           break;
-        case 10: score1.src = "http://localhost:80/icons/bob10.png"
+        case 10: score1.src = "http://localhost:8080/icons/bob10.png"
           break;
       }
       switch (room.config.p2Score)
       {
-        case 0: score2.src = "http://localhost:80/icons/bob0.png"
+        case 0: score2.src = "http://localhost:8080/icons/bob0.png"
           break;
-        case 1: score2.src = "http://localhost:80/icons/bob1.png"
+        case 1: score2.src = "http://localhost:8080/icons/bob1.png"
           break;
-        case 2: score2.src = "http://localhost:80/icons/bob2.png"
+        case 2: score2.src = "http://localhost:8080/icons/bob2.png"
           break;
-        case 3: score2.src = "http://localhost:80/icons/bob3.png"
+        case 3: score2.src = "http://localhost:8080/icons/bob3.png"
           break;
-        case 4: score2.src = "http://localhost:80/icons/bob4.png"
+        case 4: score2.src = "http://localhost:8080/icons/bob4.png"
           break;
-        case 5: score2.src = "http://localhost:80/icons/bob5.png"
+        case 5: score2.src = "http://localhost:8080/icons/bob5.png"
           break;
-        case 6: score2.src = "http://localhost:80/icons/bob6.png"
+        case 6: score2.src = "http://localhost:8080/icons/bob6.png"
           break;
-        case 7: score2.src = "http://localhost:80/icons/bob7.png"
+        case 7: score2.src = "http://localhost:8080/icons/bob7.png"
           break;
-        case 8: score2.src = "http://localhost:80/icons/bob8.png"
+        case 8: score2.src = "http://localhost:8080/icons/bob8.png"
           break;
-        case 9: score2.src = "http://localhost:80/icons/bob9.png"
+        case 9: score2.src = "http://localhost:8080/icons/bob9.png"
           break;
-        case 10: score2.src = "http://localhost:80/icons/bob10.png"
+        case 10: score2.src = "http://localhost:8080/icons/bob10.png"
           break;
       }
     })
@@ -190,8 +188,8 @@ let settings = {
 }
 
 const initSettings = (serv: any) => {
-  score1.src = "http://localhost:80/icons/bob0.png"
-  score2.src = "http://localhost:80/icons/bob0.png"
+  score1.src = "http://localhost:8080/icons/bob0.png"
+  score2.src = "http://localhost:8080/icons/bob0.png"
   settings = {
     w: settings.w,
     h: settings.h,
@@ -214,21 +212,20 @@ const initSettings = (serv: any) => {
 
 // Change type to SettingType
 const init = (servSettings: any, ctx: any) => {
-  p1.src = "http://localhost:80/pictures/barre2.png";
-  p2.src = "http://localhost:80/pictures/barre1.png";
-  ball.src = "http://localhost:80/pictures/ball.png";
-  bubble.src = "http://localhost:80/pictures/bubble2.png";
+  p1.src = "http://localhost:8080/pictures/barre2.png";
+  p2.src = "http://localhost:8080/pictures/barre1.png";
+  ball.src = "http://localhost:8080/pictures/ball.png";
+  bubble.src = "http://localhost:8080/pictures/bubble2.png";
 	socket.off('Init')
   initSettings(servSettings)
-	const globale = document.getElementById('globale') as HTMLCanvasElement
   globalCtx = ctx;
   printGame(ctx)
 	socket.on('Start', (body) => {
     if ((body.room.players[0] && body.room.players[0] === settings.currentUser)
       || (body.room.players[1] && body.room.players[1] === settings.currentUser)
-      || !body.room.players[0] || (!body.room.players[1] && body.room.mode != 1))
+      || !body.room.players[0] || (!body.room.players[1] && body.room.mode !== 1))
         settings.spec = false
-    if (body.room.code == settings.room)
+    if (body.room.code === settings.room)
       start(ctx)
 	})
   let infosClavier = (e: KeyboardEvent) => {

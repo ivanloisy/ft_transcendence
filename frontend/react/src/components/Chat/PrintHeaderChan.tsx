@@ -5,7 +5,6 @@ import ModalBanUser from '../utils/ModalBanUser';
 import ModalMuteUser from '../utils/ModalMuteUser';
 import ModalAdminUser from "../utils/ModalAdminUser";
 import { Socket } from "socket.io-client";
-import { channel } from "diagnostics_channel";
 
 class AdminButtons extends Component<
     {

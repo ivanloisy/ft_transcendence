@@ -82,7 +82,7 @@ export const PrintChannel = (
           parentCallBack.setMessage([]);
           parentCallBack.setRoom("null");
           parentCallBack.getChan();
-          window.location.href = "http://localhost:80/chat"; //!
+          window.location.href = "http://localhost:8080/chat"; //!
         }
       }
     }
@@ -130,7 +130,7 @@ export const PrintChannel = (
             //parentCallBack.setMessage([]);
             parentCallBack.setRoom("null");
             //parentCallBack.getChan();
-            //window.location.href = "http://localhost:80/chat"; //!
+            //window.location.href = "http://localhost:8080/chat"; //!
             navigate("/chat");
           } else {
             socket.emit("newMessage", {
@@ -186,7 +186,7 @@ export const PrintChannel = (
     )
   };
 
-  if (room && room != "null") {
+  if (room && room !== "null") {
     return (
       <div className="inChat row col-10">
         <div className="d-flex justify-content-start p-0">
