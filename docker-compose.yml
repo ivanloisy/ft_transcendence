@@ -1,0 +1,70 @@
+services:
+  site:
+    image: ft_transcendence_site:v0
+    container_name: ft_transcendence_site
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - ft_transcendence_app_network
+    restart: always
+
+  api:
+    image: ft_transcendence_api:v0
+    container_name: ft_transcendence_api
+    build:
+      context: ./backend/
+      # Only will build development stage from our Dockerfile
+      target: development
+      dockerfile: Dockerfile
+    env_file:
+      - ~/.ft_transcendence.env
+    volumes:
+      - ${DATA_PATH:-/var/lib/ft_transcendence}/uploads:/home/node/app/uploads/profileimages
+    ports:
+      - "3000:3000"
+    # Run a command against the development stage of the image
+    command: npm run start:dev
+    #depends_on:
+     #- postgres
+    networks:
+      - ft_transcendence_app_network
+      - ft_transcendence_postgres_network
+    restart: always
+
+  postgres:
+    container_name: ft_transcendence_postgres
+    image: postgres:alpine
+    env_file:
+      - ~/.ft_transcendence.env
+    ports:
+      - "5432:5432"
+    networks:
+      - ft_transcendence_postgres_network
+    restart: always
+    volumes:
+      - ${DATA_PATH:-/var/lib/ft_transcendence}/postgres:/var/lib/postgresql
+
+  pgadmin:
+    links:
+      - postgres:postgres
+    container_name: ft_transcendence_pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "5000:80"
+    volumes:
+      - ${DATA_PATH:-/var/lib/ft_transcendence}/pgadmin:/var/lib/pgadmin
+    env_file:
+      - ~/.ft_transcendence.env
+    depends_on:
+      - postgres
+    networks:
+      - ft_transcendence_postgres_network
+
+networks:
+  ft_transcendence_app_network:
+    driver: bridge
+  ft_transcendence_postgres_network:
+    driver: bridge
