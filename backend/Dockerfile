@@ -6,11 +6,9 @@
 # https://www.tomray.dev/nestjs-docker-compose-postgres
 
 # Build for local development
-FROM node:alpine As development
+FROM node:18-alpine AS development
 # ... put your development instructions here.
 ENV TZ="Europe/Paris"
-
-RUN npm install -g npm@latest
 
 WORKDIR /home/node/app
 
@@ -27,7 +25,7 @@ COPY --chown=node:node ./default.jpg ./uploads/profileimages/
 # End of development instructions.
 
 # Build for production
-FROM node:alpine As build
+FROM node:18-alpine AS build
 # ... put your build instructions here.
 
 WORKDIR /home/node/app
@@ -58,7 +56,7 @@ USER node
 # End of build instructions.
 
 # Build for production
-FROM node:alpine As production
+FROM node:18-alpine As production
 # ... put your prodution instructions here.
 
 # Copy the bundled code from the build stage to the production image

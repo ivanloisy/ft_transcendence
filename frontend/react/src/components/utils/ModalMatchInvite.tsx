@@ -4,10 +4,9 @@ import "../../styles/components/utils/modal.css";
 import { io } from 'socket.io-client';
 import { AuthContext } from '../../contexts/AuthProviderContext';
 import {PartiesType, UserType} from "../../types";
-//import { socket } from '../../contexts/WebSocketContextUpdate';
+import { BACKEND_URL, WS_URL } from '../../config';
 
-
-const socket = io("http://localhost:3000/update");
+const socket = io(`${WS_URL}/update`);
 
 class ModalMatchInvite extends Component<{ title: string, calledBy: string, user: any}, {}> {
   static contextType = AuthContext;
@@ -27,7 +26,7 @@ class ModalMatchInvite extends Component<{ title: string, calledBy: string, user
             type: 1,
             vitesse: 1
           },
-          "http://localhost:3000/parties/create"
+          `${BACKEND_URL}/parties/create`
       );
     } catch (error) {
       ctx.setError(error);
@@ -39,7 +38,7 @@ class ModalMatchInvite extends Component<{ title: string, calledBy: string, user
         'GET',
         {},
         {},
-        "http://localhost:3000/parties/"
+        `${BACKEND_URL}/parties/`
      )
     } catch (error) {
       ctx.setError(error);
@@ -50,7 +49,7 @@ class ModalMatchInvite extends Component<{ title: string, calledBy: string, user
     })
     socket.emit('inviteAccepted', {"to": this.props.user.auth_id, "from": this.getCurrentUser().auth_id, "partyID": party?.id})
     if (party)
-      window.location.href = "http://localhost:8080/gameup/" + party.id;
+      window.location.href = "/gameup/" + party.id;
   }
 
   decline = (): void => {
@@ -77,7 +76,7 @@ class ModalMatchInvite extends Component<{ title: string, calledBy: string, user
               You received an invitation
             </h2>
             <div className="d-flex flex-column justify-content-center">
-              <img alt="" src={"http://localhost:3000/user/" +
+              <img alt="" src={`${BACKEND_URL}/user/` +
                   this.props.user.auth_id +
                   "/avatar"} className='modifAvatar mx-auto'></img>
               <div>

@@ -14,15 +14,16 @@ import Switch from "./utils/Switch";
 import { CreatePrivChanDto } from "../dtos/create-chan.dto";
 import { UserJoinChannelReceiveDto } from "../dtos/userjoinchannel.dto";
 import "../styles/components/utils/userCards.css";
+import { BACKEND_URL, WS_URL } from "../config";
 
-const socketChat = io("http://localhost:3000/chat");
+const socketChat = io(`${WS_URL}/chat`);
 
 const BtnToChat = ({cb}:{cb: any}) => {
   const navigate = useNavigate();
 
   const btnClick = async () => {
     const ret:string = await cb();
-    if (ret !== "" && !window.location.href.includes("http://localhost:8080/chat"))
+    if (ret !== "" && !window.location.pathname.startsWith("/chat"))
       navigate(ret);
   }
 
@@ -80,7 +81,7 @@ class Profil extends Component<
         "GET",
         {},
         {},
-        "http://localhost:3000/user/name/" + username
+        `${BACKEND_URL}/user/name/` + username
       );
       this.setState({ user: newUser });
       this.setState({ current_username: username })
@@ -100,7 +101,7 @@ class Profil extends Component<
         "GET",
         {},
         {},
-        "http://localhost:3000/parties/histories/all"
+        `${BACKEND_URL}/parties/histories/all`
       );
     } catch (error) {
       ctx.setError(error);
@@ -117,7 +118,7 @@ class Profil extends Component<
        "GET",
        {},
        {},
-       "http://localhost:3000/user"
+       `${BACKEND_URL}/user`
      );
    } catch (error) {
      ctx.setError(error);
@@ -144,7 +145,7 @@ class Profil extends Component<
           "GET",
           {},
           {},
-          "http://localhost:3000/chan/"
+          `${BACKEND_URL}/chan/`
       )
     } catch (error) {
       ctx.setError(error);
@@ -174,13 +175,13 @@ class Profil extends Component<
         "GET",
         {},
         {},
-        "http://localhost:3000/user/name/" + this.state.user?.username,
+        `${BACKEND_URL}/user/name/` + this.state.user?.username,
       )
 	  const chans: ChanType[] = await Request(
         "GET",
         {},
         {},
-        "http://localhost:3000/chan",
+        `${BACKEND_URL}/chan`,
       )
       let doesChanExist: boolean = false;
       let newChan: ChanType | undefined = undefined;
@@ -208,7 +209,7 @@ class Profil extends Component<
               "Content-Type": "application/json",
             },
             createprivchan,
-            "http://localhost:3000/chan/createpriv"
+            `${BACKEND_URL}/chan/createpriv`
             );
         const res: UserJoinChannelReceiveDto = {chan: newChan, auth_id: u2.auth_id}
           socketChat.emit("chanCreated", res);
@@ -251,7 +252,7 @@ class Profil extends Component<
     const usr: UserType = cxt.user;
     this.setState({ user: usr });
     this.setState({ current_username: usr.username });
-    if (document.URL === "http://localhost:8080" || document.URL === "http://localhost:8080/") {
+    if (window.location.pathname === "/" || window.location.pathname === "") {
       this.props.nav("/profil/" + usr.username);
     }
     const url: string = this.props.loc.pathname;
@@ -300,7 +301,7 @@ class Profil extends Component<
               alt="prout"
               width={100}
               height={100}
-              src={"http://localhost:3000/user/" + this.state.user?.auth_id + "/avatar"} />
+              src={`${BACKEND_URL}/user/${this.state.user?.auth_id}/avatar`} />
               <h3>{this.state.user?.username + " "}</h3>
             <div className="row">
               <div className="col"><BlockUnBlock auth_id={this.state.user?.auth_id} /></div>

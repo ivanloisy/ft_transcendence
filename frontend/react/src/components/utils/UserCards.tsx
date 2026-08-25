@@ -10,17 +10,17 @@ import ModalMatchInvite from "./ModalMatchInvite";
 import {UpdateUserGameDto} from "../../dtos/updateUser.dto";
 import {CreatePrivChanDto} from "../../dtos/create-chan.dto";
 import {UserJoinChannelReceiveDto} from "../../dtos/userjoinchannel.dto";
-//import { socket } from '../../contexts/WebSocketContextUpdate';
+import { BACKEND_URL, WS_URL } from "../../config";
 
-const socket = io("http://localhost:3000/update");
-const socketChat = io("http://localhost:3000/chat");
+const socket = io(`${WS_URL}/update`);
+const socketChat = io(`${WS_URL}/chat`);
 
 const BtnToChat = ({cb}:{cb: any}) => {
   const navigate = useNavigate();
 
   const btnClick = async () => {
     const ret:string = await cb();
-    if (ret !== "" && !window.location.href.includes("http://localhost:8080/chat"))
+    if (ret !== "" && !window.location.pathname.startsWith("/chat"))
       navigate(ret);
   }
 
@@ -103,7 +103,7 @@ class UserCards extends Component<
           "GET",
           {},
           {},
-          "http://localhost:3000/chan/"
+          `${BACKEND_URL}/chan/`
       )
     } catch (error) {
       ctx.setError(error);
@@ -133,13 +133,13 @@ class UserCards extends Component<
         "GET",
         {},
         {},
-        "http://localhost:3000/user/name/" + this.state.login,
+        `${BACKEND_URL}/user/name/` + this.state.login,
       )
 	  const chans: ChanType[] = await Request(
         "GET",
         {},
         {},
-        "http://localhost:3000/chan",
+        `${BACKEND_URL}/chan`,
       )
       let doesChanExist: boolean = false;
       let newChan: ChanType | undefined = undefined;
@@ -166,7 +166,7 @@ class UserCards extends Component<
               "Content-Type": "application/json",
             },
             createprivchan,
-            "http://localhost:3000/chan/createpriv"
+            `${BACKEND_URL}/chan/createpriv`
             );
         const res: UserJoinChannelReceiveDto = {chan: newChan, auth_id: u2.auth_id}
           socketChat.emit("chanCreated", res);
@@ -327,7 +327,7 @@ class UserCards extends Component<
                 <img
                   alt=""
                   src={
-                    "http://localhost:3000/user/" +
+                    `${BACKEND_URL}/user/` +
                     this.props.user.auth_id +
                     "/avatar"
                   }
@@ -364,7 +364,7 @@ class UserCards extends Component<
             <img
               alt=""
               src={
-                "http://localhost:3000/user/" +
+                `${BACKEND_URL}/user/` +
                 this.props.user.auth_id +
                 "/avatar"
               }
@@ -412,7 +412,7 @@ class UserCards extends Component<
       });
       socket.on("onInviteAccepted", (body: { "to": string, "from": string, "partyID": string }) => {
         if (body.to === this.getCurrentUser().auth_id)
-          window.location.href = "http://localhost:8080/gameup/" + body.partyID;
+          window.location.href = "/gameup/" + body.partyID;
       });
       socket.on("onInviteDeclined", (body: { "to": string, "from": string }) => {
         if (body.to === this.getCurrentUser().auth_id) {
@@ -431,7 +431,7 @@ class UserCards extends Component<
          "GET",
          {},
          {},
-         "http://localhost:3000/user/id/" + this.state.id
+         `${BACKEND_URL}/user/id/` + this.state.id
        );
      } catch (error) {
        ctx.setError(error);

@@ -21,6 +21,7 @@ import UserEntity from '../user/entities/user-entity';
 import jwt_decode from 'jwt-decode';
 import { UserAuthGuard } from './guards/user-auth.guard';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { configService } from '../config/config.service';
 
 @Controller('auth')
 export class AuthController {
@@ -56,7 +57,7 @@ export class AuthController {
       res
         .status(202)
         .cookie('jwt', access_token, { httpOnly: true  })
-        .redirect('http://localhost:8080');
+        .redirect(configService.getFrontendUrl());
     } catch (error) {
       throw new Error(error);
     }
@@ -77,7 +78,7 @@ export class AuthController {
       res
         .status(202)
         .cookie('jwt', access_token, { httpOnly: true })
-        .redirect('http://localhost:8080');
+        .redirect(configService.getFrontendUrl());
     } catch (error) {
       throw new Error(error);
     }

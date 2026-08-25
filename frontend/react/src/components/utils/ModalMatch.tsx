@@ -4,9 +4,9 @@ import "../../styles/components/utils/modal.css";
 import io from 'socket.io-client';
 import { AuthContext } from '../../contexts/AuthProviderContext';
 import { PartiesType } from "../../types";
-//import { socket } from '../../contexts/WebSocketContextUpdate';
+import { BACKEND_URL, WS_URL } from '../../config';
 
-const socket = io("http://localhost:3000/update");
+const socket = io(`${WS_URL}/update`);
 
 class ModalMatch extends Component<{ title: string, calledBy: string }, {}> {
 
@@ -41,23 +41,23 @@ class ModalMatch extends Component<{ title: string, calledBy: string }, {}> {
           type: isClassic,
           vitesse: vitesse
         },
-        "http://localhost:3000/parties/create"
+        `${BACKEND_URL}/parties/create`
       );
       socket.emit('newParty');
       const parties: PartiesType[] = await Request(
           'GET',
           {},
           {},
-          "http://localhost:3000/parties/"
+          `${BACKEND_URL}/parties/`
       )
       const ids: number[] = parties.map((p: any) => {
         return p.id;
       })
       this.hidden()
       if (isClassic)
-        window.location.href = "http://localhost:8080/game/" + Math.max(...ids)//currentUser.user.username
+        window.location.href = "/game/" + Math.max(...ids)//currentUser.user.username
       else
-        window.location.href = "http://localhost:8080/gameup/" + Math.max(...ids)//currentUser.user.username
+        window.location.href = "/gameup/" + Math.max(...ids)//currentUser.user.username
       } catch (error) {
        const ctx: any = this.context;
        ctx.setError(error);

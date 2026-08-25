@@ -12,8 +12,9 @@ import { AuthType, ChanType, UserType } from "../types";
 import { NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import {FriendUserSendDto} from "../dtos/friend-user.dto";
+import { BACKEND_URL, WS_URL } from "../config";
 
-const socket = io('http://localhost:3000/update')
+const socket = io(`${WS_URL}/update`)
 export const AuthContext = createContext<any>({});
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -232,7 +233,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
             "GET",
             {},
             {},
-            "http://localhost:3000/auth/istoken"
+            `${BACKEND_URL}/auth/istoken`
         )
         if (res) {
           if (res.isTok === 0) {
@@ -248,7 +249,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
                   "GET",
                   {},
                   {},
-                  "http://localhost:3000/user/current"
+                  `${BACKEND_URL}/user/current`
               )
               if (user) {
                 setUser(user);
@@ -269,7 +270,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
                     "GET",
                     {},
                     {},
-                    "http://localhost:3000/user/",
+                    `${BACKEND_URL}/user/`,
                     )
                     setUserList(uselist);
 
@@ -279,7 +280,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
                       "GET",
                       {},
                       {},
-                      "http://localhost:3000/user/" + user.auth_id + "/getfriends",
+                      `${BACKEND_URL}/user/` + user.auth_id + "/getfriends",
                   )
                   setFriendsList(flist);
 
@@ -289,7 +290,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
                       "GET",
                       {},
                       {},
-                      "http://localhost:3000/user/" + user.auth_id + "/getblocked"
+                      `${BACKEND_URL}/user/` + user.auth_id + "/getblocked"
                   )
                   setBlockedList(blist);
 
@@ -299,7 +300,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
                       "GET",
                       {},
                       {},
-                      "http://localhost:3000/user/chan/muted"
+                      `${BACKEND_URL}/user/chan/muted`
                   )
                   setMutedFrom(mlist);
 
@@ -309,7 +310,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
                       "GET",
                       {},
                       {},
-                      "http://localhost:3000/user/chan/banned"
+                      `${BACKEND_URL}/user/chan/banned`
                   )
                   setBannedFrom(banlist);
 
@@ -319,7 +320,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
                       "GET",
                       {},
                       {},
-                      "http://localhost:3000/user/chan/joined"
+                      `${BACKEND_URL}/user/chan/joined`
                   )
                   setChanFrom(jlist);
 
@@ -329,7 +330,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
                       "GET",
                       {},
                       {},
-                      "http://localhost:3000/user/chan/admin"
+                      `${BACKEND_URL}/user/chan/admin`
                   )
                   setAdminFrom(alist);
 

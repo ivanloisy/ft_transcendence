@@ -5,7 +5,8 @@ import '../styles/pages/game.css'
 import ModalMatchWaiting from '../components/utils/ModalMatchWaiting';
 import { io } from 'socket.io-client';
 import { AuthContext } from '../contexts/AuthProviderContext';
-const updateSocket = io("http://localhost:3000/update");
+import { BACKEND_URL, WS_URL } from '../config';
+const updateSocket = io(`${WS_URL}/update`);
 
 let score1 = new Image();
 let score2 = new Image();
@@ -24,21 +25,21 @@ let gameOver = () => {
   socket.off('players')
   socket.off('onEndGame')
   updateSocket.emit('updateUser', {auth_id: settings.currentUser, status: 1})
-	window.location.href = "http://localhost:8080/history"
+	window.location.href = "/history"
 }
 
 let joinRoom = async () => {
-  const games = await Request('GET', {}, {}, "http://localhost:3000/parties")
+  const games = await Request('GET', {}, {}, `${BACKEND_URL}/parties`)
   let url = document.URL
   let index = url.lastIndexOf("/")
   if (index === -1) {
-    window.location.href = "http://localhost:8080/history"
+    window.location.href = "/history"
   }
   else {
     url = url.substring(index + 1)
     let game: any = games.find((c:any) => c.id === url)
     if (game === undefined) {
-      window.location.href = "http://localhost:8080/history"
+      window.location.href = "/history"
     }
     else
 			socket.emit('joinRoom', {"game":game, "auth_id": settings.currentUser})
@@ -113,52 +114,52 @@ const start = (ctx: any) => {
     socket.on('newPoint', (room) => {
       switch (room.config.p1Score)
       {
-        case 0: score1.src = "http://localhost:8080/icons/bob0.png"
+        case 0: score1.src = "/icons/bob0.png"
           break;
-        case 1: score1.src = "http://localhost:8080/icons/bob1.png"
+        case 1: score1.src = "/icons/bob1.png"
           break;
-        case 2: score1.src = "http://localhost:8080/icons/bob2.png"
+        case 2: score1.src = "/icons/bob2.png"
           break;
-        case 3: score1.src = "http://localhost:8080/icons/bob3.png"
+        case 3: score1.src = "/icons/bob3.png"
           break;
-        case 4: score1.src = "http://localhost:8080/icons/bob4.png"
+        case 4: score1.src = "/icons/bob4.png"
           break;
-        case 5: score1.src = "http://localhost:8080/icons/bob5.png"
+        case 5: score1.src = "/icons/bob5.png"
           break;
-        case 6: score1.src = "http://localhost:8080/icons/bob6.png"
+        case 6: score1.src = "/icons/bob6.png"
           break;
-        case 7: score1.src = "http://localhost:8080/icons/bob7.png"
+        case 7: score1.src = "/icons/bob7.png"
           break;
-        case 8: score1.src = "http://localhost:8080/icons/bob8.png"
+        case 8: score1.src = "/icons/bob8.png"
           break;
-        case 9: score1.src = "http://localhost:8080/icons/bob9.png"
+        case 9: score1.src = "/icons/bob9.png"
           break;
-        case 10: score1.src = "http://localhost:8080/icons/bob10.png"
+        case 10: score1.src = "/icons/bob10.png"
           break;
       }
       switch (room.config.p2Score)
       {
-        case 0: score2.src = "http://localhost:8080/icons/bob0.png"
+        case 0: score2.src = "/icons/bob0.png"
           break;
-        case 1: score2.src = "http://localhost:8080/icons/bob1.png"
+        case 1: score2.src = "/icons/bob1.png"
           break;
-        case 2: score2.src = "http://localhost:8080/icons/bob2.png"
+        case 2: score2.src = "/icons/bob2.png"
           break;
-        case 3: score2.src = "http://localhost:8080/icons/bob3.png"
+        case 3: score2.src = "/icons/bob3.png"
           break;
-        case 4: score2.src = "http://localhost:8080/icons/bob4.png"
+        case 4: score2.src = "/icons/bob4.png"
           break;
-        case 5: score2.src = "http://localhost:8080/icons/bob5.png"
+        case 5: score2.src = "/icons/bob5.png"
           break;
-        case 6: score2.src = "http://localhost:8080/icons/bob6.png"
+        case 6: score2.src = "/icons/bob6.png"
           break;
-        case 7: score2.src = "http://localhost:8080/icons/bob7.png"
+        case 7: score2.src = "/icons/bob7.png"
           break;
-        case 8: score2.src = "http://localhost:8080/icons/bob8.png"
+        case 8: score2.src = "/icons/bob8.png"
           break;
-        case 9: score2.src = "http://localhost:8080/icons/bob9.png"
+        case 9: score2.src = "/icons/bob9.png"
           break;
-        case 10: score2.src = "http://localhost:8080/icons/bob10.png"
+        case 10: score2.src = "/icons/bob10.png"
           break;
       }
     })
@@ -188,8 +189,8 @@ let settings = {
 }
 
 const initSettings = (serv: any) => {
-  score1.src = "http://localhost:8080/icons/bob0.png"
-  score2.src = "http://localhost:8080/icons/bob0.png"
+  score1.src = "/icons/bob0.png"
+  score2.src = "/icons/bob0.png"
   settings = {
     w: settings.w,
     h: settings.h,
@@ -212,10 +213,10 @@ const initSettings = (serv: any) => {
 
 // Change type to SettingType
 const init = (servSettings: any, ctx: any) => {
-  p1.src = "http://localhost:8080/pictures/barre2.png";
-  p2.src = "http://localhost:8080/pictures/barre1.png";
-  ball.src = "http://localhost:8080/pictures/ball.png";
-  bubble.src = "http://localhost:8080/pictures/bubble2.png";
+  p1.src = "/pictures/barre2.png";
+  p2.src = "/pictures/barre1.png";
+  ball.src = "/pictures/ball.png";
+  bubble.src = "/pictures/bubble2.png";
 	socket.off('Init')
   initSettings(servSettings)
   globalCtx = ctx;

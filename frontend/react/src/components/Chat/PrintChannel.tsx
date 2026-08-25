@@ -82,7 +82,7 @@ export const PrintChannel = (
           parentCallBack.setMessage([]);
           parentCallBack.setRoom("null");
           parentCallBack.getChan();
-          window.location.href = "http://localhost:8080/chat"; //!
+          window.location.href = "/chat"; //!
         }
       }
     }

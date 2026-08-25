@@ -4,6 +4,7 @@ import SearchBar from './utils/SearchBar'
 import Request from "./utils/Requests"
 import { ErrorType, PartiesType } from "../types";
 import { AuthContext } from '../contexts/AuthProviderContext';
+import { BACKEND_URL } from '../config';
 import '../styles/components/matchnav.css';
 
 class MatchNav extends Component<{}, {}> {
@@ -39,7 +40,7 @@ class MatchNav extends Component<{}, {}> {
 				'GET',
 				{},
 				{},
-				"http://localhost:3000/parties"
+				`${BACKEND_URL}/parties`
 			)
 		} catch (error) {
 			ctx.setError(error);
@@ -60,9 +61,9 @@ class MatchNav extends Component<{}, {}> {
 		}
 		const randomGame: PartiesType = availableGames[(Math.floor(Math.random() * availableGames.length))];
 		if (randomGame.type === 1)
-			window.location.href = "http://localhost:8080/game/" + randomGame.id
+			window.location.href = "/game/" + randomGame.id
 		else
-			window.location.href = "http://localhost:8080/gameup/" + randomGame.id
+			window.location.href = "/gameup/" + randomGame.id
 	}
 
 	prompt = (): void => {
@@ -82,7 +83,7 @@ class MatchNav extends Component<{}, {}> {
 			return (
 				<div key={key} className="gamesDiv text-nowrap d-flex justify-content-between">
 					<div>
-						<button className="" onClick={() => window.location.href = "http://localhost:8080/game/" + id}>{(count === nbplayer) ? "Spec" : "Join"}</button>
+						<button className="" onClick={() => window.location.href = "/game/" + id}>{(count === nbplayer) ? "Spec" : "Join"}</button>
 					</div>
 					<div style={{ verticalAlign: "top" }}>
 						<p className="py-2">{login}</p>
@@ -98,7 +99,7 @@ class MatchNav extends Component<{}, {}> {
 			return (
 				<div key={key} className="gamesDiv text-nowrap d-flex justify-content-between">
 					<div>
-						<button className="" onClick={() => window.location.href = "http://localhost:8080/gameup/" + id}>{(count === nbplayer) ? "Spec" : "Join"}</button>
+						<button className="" onClick={() => window.location.href = "/gameup/" + id}>{(count === nbplayer) ? "Spec" : "Join"}</button>
 					</div>
 					<div style={{ verticalAlign: "top" }}>
 						<p className="py-2">{login}</p>

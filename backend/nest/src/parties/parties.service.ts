@@ -7,8 +7,9 @@ import { HistoryEntity } from './entities/history-entity';
 import { HistorySavePartiesDto } from './dto/history-save-parties.dto';
 import { UserService } from '../user/user.service';
 import * as io from "socket.io-client";
+import { configService } from '../config/config.service';
 
-const update = io.connect("http://localhost:3000/update");
+const update = io.connect(`http://localhost:${configService.getPort()}/update`);
 
 @Injectable()
 export class PartiesService {

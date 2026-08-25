@@ -1,10 +1,11 @@
 import { useAuthData } from "../../contexts/AuthProviderContext";
 import { ErrorType } from "../../types";
+import { BACKEND_URL, getApiUrl } from "../../config";
 
 const Logout = async (): Promise<void> => {
   const { userAuthentication, updateIsTwoFa } = useAuthData();
 
-  await fetch("http://localhost:3000/auth/logout", {
+  await fetch(`${BACKEND_URL}/auth/logout`, {
     method: "DELETE",
     credentials: "include",
     headers: {
@@ -30,9 +31,9 @@ const Request = async (
     body: any,
     url: string): Promise<any> =>
 {
-    //console.log(url);
+    const targetUrl = getApiUrl(url);
     if (type === "GET") {
-      const response: Response = await fetch(url, {
+      const response: Response = await fetch(targetUrl, {
         method: type,
         credentials: "include",
         headers: headers,
@@ -49,7 +50,7 @@ const Request = async (
       }
 
     } else {
-      const response: Response = await fetch(url, {
+      const response: Response = await fetch(targetUrl, {
         method: type,
         headers: headers,
         credentials: "include",

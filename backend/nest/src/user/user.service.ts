@@ -15,8 +15,9 @@ import {
 } from './dto/update-user.dto';
 import ChanEntity from "../chans/entities/chan-entity";
 import * as io from "socket.io-client";
+import { configService } from '../config/config.service';
 
-const update = io.connect("http://localhost:3000/update");
+const update = io.connect(`http://localhost:${configService.getPort()}/update`);
 
 
 @Injectable()

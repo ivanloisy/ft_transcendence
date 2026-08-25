@@ -1,6 +1,4 @@
-FROM node:alpine
-
-RUN npm install -g npm@latest
+FROM node:18-alpine
 
 WORKDIR /home/node/www
 
@@ -9,6 +7,13 @@ COPY --chown=node:node ./react/package*.json ./
 RUN npm ci
 
 COPY --chown=node:node ./react ./
+
+ARG REACT_APP_BACKEND_URL
+ARG REACT_APP_WS_URL
+ARG REACT_APP_FRONTEND_URL
+ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+ENV REACT_APP_WS_URL=$REACT_APP_WS_URL
+ENV REACT_APP_FRONTEND_URL=$REACT_APP_FRONTEND_URL
 
 #USER node
 

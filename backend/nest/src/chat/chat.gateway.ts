@@ -21,7 +21,8 @@ import {NewMessageSendDto} from "./dto/newMessage.dto";
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:8080'],
+    origin: true,
+    credentials: true,
   },
   namespace: '/chat'
 })

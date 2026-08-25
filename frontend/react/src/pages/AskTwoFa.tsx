@@ -3,6 +3,7 @@ import {Navigate} from "react-router-dom";
 import {useAuthData} from "../contexts/AuthProviderContext";
 import {ErrorType} from "../types";
 import {TwoFACodeDto} from "../dtos/twofacode.dto";
+import { BACKEND_URL } from "../config";
 
 const AskTwoFa = (): JSX.Element => {
   const { user, setError, updateUserList, userAuthentication, isAuth, loading, isToken, isTwoFa} = useAuthData();
@@ -11,7 +12,7 @@ const AskTwoFa = (): JSX.Element => {
 
   const validateTwoFa = async (): Promise<void> => {
       const twofacode: TwoFACodeDto = {twoFACode: code}
-      const res: Response = await fetch("http://localhost:3000/auth/2fa/authenticate",
+      const res: Response = await fetch(`${BACKEND_URL}/auth/2fa/authenticate`,
           {
             method: "POST",
             credentials: 'include',

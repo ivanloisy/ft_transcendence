@@ -1,7 +1,8 @@
 NAME				= ft_transcendence
 COMPOSE_FILE		= ./docker-compose.yml
 PROJECT_NAME		= ft_transcendence
-DOCKER_COMPOSE		= docker compose -p $(PROJECT_NAME) --file $(COMPOSE_FILE)
+ENV_FILE			?= $(HOME)/.ft_transcendence.env
+DOCKER_COMPOSE		= docker compose --env-file $(ENV_FILE) -p $(PROJECT_NAME) --file $(COMPOSE_FILE)
 export DATA_PATH	?= /var/lib/ft_transcendence
 
 # Colors for terminal output

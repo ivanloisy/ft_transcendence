@@ -19,7 +19,11 @@ export class ConfigService {
   }
 
   public getPort() {
-    return this.getValue('PORT', true);
+    return this.getValue('PORT', false) || '3000';
+  }
+
+  public getFrontendUrl() {
+    return this.getValue('FRONTEND_URL', false) || 'http://localhost:8080';
   }
 
   public isProduction() {

@@ -1,7 +1,9 @@
 import { createContext } from 'react';
 import io, { Socket } from 'socket.io-client';
 import { WebsocketContext } from "./WebSocketContext";
-export const socket = io('http://localhost:3000/update');
+import { WS_URL } from '../config';
+
+export const socket = io(`${WS_URL}/update`);
 export const WebsocketContextUpdate = createContext<Socket>(socket);
 export const WebsocketProvider = WebsocketContext.Provider;
 /*

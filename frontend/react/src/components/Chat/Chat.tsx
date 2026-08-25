@@ -14,6 +14,7 @@ import {MuteToChannelSendDto, TimerOutMuteDto} from "../../dtos/muteToChannel.dt
 import {AdminToChannelSendDto} from "../../dtos/adminToChannel.dto";
 import {CreateChanDto} from "../../dtos/create-chan.dto";
 import "../../styles/components/chat.css"
+import { BACKEND_URL } from "../../config";
 
 export const WebSocket = (): JSX.Element => {
   const [value, setValue] = useState('');
@@ -228,7 +229,7 @@ export const WebSocket = (): JSX.Element => {
     getChan();
     const checkUrl: NodeJS.Timer = setInterval(() => {
       let url: string = document.URL
-      if (!document.URL.includes("localhost:8080/chat"))
+      if (!window.location.pathname.startsWith("/chat"))
         clearInterval(checkUrl);
       url = url.substring(url.lastIndexOf("/") + 1)
       if (url !== location) {

@@ -13,8 +13,9 @@ import { UserService} from "../user/user.service";
 import * as io from "socket.io-client";
 import { ChanType } from "./types/chan.type";
 import { Msg } from './types/msg.type';
+import { configService } from '../config/config.service';
 
-const socket = io.connect("http://localhost:3000/chat");
+const socket = io.connect(`http://localhost:${configService.getPort()}/chat`);
 
 @Injectable()
 export class ChanService {

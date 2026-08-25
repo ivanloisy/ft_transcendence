@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuthData } from "../contexts/AuthProviderContext";
 import { useEffect, useState } from "react";
 import { AvatarType } from "../types";
+import { BACKEND_URL } from "../config";
 
 const Menu = () => {
   const { setError, user, updateIsTwoFa, userAuthentication } = useAuthData();
@@ -13,12 +14,12 @@ const Menu = () => {
       setUsername(user.username);
     }
     if (user.avatar) {
-      setAvatarUrl({url: 'http://localhost:3000/user/' + user.auth_id + '/avatar', hash: Date.now()});
+      setAvatarUrl({url: `${BACKEND_URL}/user/${user.auth_id}/avatar`, hash: Date.now()});
     }
   }, [user])
 
   const logoutSession = async () => {
-    const res: Response = await fetch("http://localhost:3000/auth/logout", {
+    const res: Response = await fetch(`${BACKEND_URL}/auth/logout`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -36,7 +37,7 @@ const Menu = () => {
     }
 
     const linkChat = () => {
-      if (window.location.href.includes("localhost:8080/chat"))
+      if (window.location.pathname.startsWith("/chat"))
         return (
           <div className="m-0">Chat</div>
         )
@@ -56,7 +57,7 @@ const Menu = () => {
         </div>{" "}
         {/* homeButtonDiv */}
         <div className="titleDiv d-none d-sm-block">
-          <h1 className="m-0"><img alt="" className="BobLePong" src="http://localhost:8080/pictures/boblepongelogo.png"/></h1>
+          <h1 className="m-0"><img alt="" className="BobLePong" src="/pictures/boblepongelogo.png"/></h1>
         </div>{" "}
         {/* titleDiv */}
         <div className="profilMenu d-flex justify-content-end align-items-center col-3">

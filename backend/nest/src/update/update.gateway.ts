@@ -15,7 +15,8 @@ import {SendGameInfoDto} from "./dto/game.dto";
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:8080'],
+    origin: true,
+    credentials: true,
   },
   namespace: '/update',
 })

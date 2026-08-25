@@ -7,8 +7,9 @@ import { authenticator } from 'otplib';
 import { toFileStream } from 'qrcode';
 import * as io from 'socket.io-client';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { configService } from '../config/config.service';
 
-const socket = io.connect("http://localhost:3000/update");
+const socket = io.connect(`http://localhost:${configService.getPort()}/update`);
 
 @Injectable()
 export class AuthService {
