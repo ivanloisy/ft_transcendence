@@ -10,7 +10,7 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Response, CookieOptions } from 'express';
 import { IntraAuthGuard } from './guards/intra-auth.guard';
 import { PayloadInterface } from './interfaces/payload.interface';
 import { JwtService } from '@nestjs/jwt';
@@ -18,10 +18,17 @@ import { AuthService } from './auth.service';
 import { TwoFACodeDto } from './dto/twofacode.dto';
 import { AuthGuard } from '@nestjs/passport';
 import UserEntity from '../user/entities/user-entity';
-import jwt_decode from 'jwt-decode';
 import { UserAuthGuard } from './guards/user-auth.guard';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { configService } from '../config/config.service';
+
+const isProduction = process.env.NODE_ENV === 'production';
+const getCookieOptions = (extraOptions: Partial<CookieOptions> = {}): CookieOptions => ({
+  httpOnly: true,
+  sameSite: 'lax',
+  secure: isProduction,
+  ...extraOptions,
+});
 
 @Controller('auth')
 export class AuthController {
@@ -36,8 +43,21 @@ export class AuthController {
     return;
   }
 
+  /**
+   * DEVELOPMENT / DEBUG ROUTE (`dummyconnect`)
+   *
+   * This route generates a dummy user (dummy1, dummy2, etc.)
+   * and creates a valid JWT directly without going through the 42 OAuth API.
+   *
+   * SECURITY:
+   * It is strictly disabled in production (NODE_ENV === 'production')
+   * to prevent authentication bypass or unauthorized account creation.
+   */
   @Get('dummyconnect')
-  async dummyConnect(@Res() res): Promise<void> {
+  async dummyConnect(@Res() res: Response): Promise<void> {
+    if (isProduction) {
+      throw new NotFoundException('This debug route is disabled in production.');
+    }
     let n_id = 1;
     while (await this.authService.findUser(n_id.toString())) {
       n_id++;
@@ -56,7 +76,7 @@ export class AuthController {
       this.authService.changeStatusUser(auth_id, 1);
       res
         .status(202)
-        .cookie('jwt', access_token, { httpOnly: true  })
+        .cookie('jwt', access_token, getCookieOptions())
         .redirect(configService.getFrontendUrl());
     } catch (error) {
       throw new Error(error);
@@ -77,7 +97,7 @@ export class AuthController {
       this.authService.changeStatusUser(auth_id, 1);
       res
         .status(202)
-        .cookie('jwt', access_token, { httpOnly: true })
+        .cookie('jwt', access_token, getCookieOptions())
         .redirect(configService.getFrontendUrl());
     } catch (error) {
       throw new Error(error);
@@ -86,11 +106,13 @@ export class AuthController {
 
   @Get('istoken')
   async authenticated(@Req() req, @Res() res): Promise<void> {
-    const req_token: string = req.cookies['jwt'];
+    const req_token: string = req.cookies?.['jwt'];
     if (!req_token) {
       res.status(201).json({ isTok: 0 });
-    } else {
-      const token: PayloadInterface = jwt_decode(req_token);
+      return;
+    }
+    try {
+      const token: PayloadInterface = this.jwtService.verify(req_token);
       const user: UserEntity = await this.authService.findUser(token.auth_id);
       if (!user) {
         res.status(201).json({ isTok: 1 });
@@ -105,6 +127,8 @@ export class AuthController {
           res.status(200).json({ isTok: 4 });
         }
       }
+    } catch (error) {
+      res.status(201).json({ isTok: 0 });
     }
   }
 
@@ -118,8 +142,8 @@ export class AuthController {
       const exp: number = time + 2000;
       now.setTime(exp);
       res
-          .status(200)
-          .cookie('jwt', '', { expires: now, httpOnly: true  })
+        .status(200)
+        .cookie('jwt', '', getCookieOptions({ expires: now }));
     } catch (error) {
       throw new Error(error);
     }
@@ -159,7 +183,7 @@ export class AuthController {
     const access_token: string = this.jwtService.sign(payload);
     try {
       await this.authService.turnOnTwoFAAuth(auid);
-      res.status(200).cookie('jwt', access_token, { httpOnly: true  });
+      res.status(200).cookie('jwt', access_token, getCookieOptions());
     } catch (error) {
       throw new Error(error);
     }
@@ -199,6 +223,6 @@ export class AuthController {
     const isAuth: boolean = true;
     const payload: PayloadInterface = { auth_id, isAuth };
     const access_token: string = this.jwtService.sign(payload);
-    res.status(200).cookie('jwt', access_token, { httpOnly: true });
+    res.status(200).cookie('jwt', access_token, getCookieOptions());
   }
 }

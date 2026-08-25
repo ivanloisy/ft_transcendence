@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { IntraStrategy } from './strategies/intra.strategy';
 import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { UserAuthGuard } from './guards/user-auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { PartiesModule } from '../parties/parties.module';
@@ -37,7 +38,7 @@ import { ChatModule } from '../chat/chat.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, IntraStrategy, JwtStrategy],
-  exports: [AuthService],
+  providers: [AuthService, IntraStrategy, JwtStrategy, UserAuthGuard],
+  exports: [AuthService, JwtModule, UserAuthGuard],
 })
 export class AuthModule {}
