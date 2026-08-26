@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
 export class ConfigService {
@@ -26,11 +27,11 @@ export class ConfigService {
     return this.getValue('FRONTEND_URL', false) || 'http://localhost:8080';
   }
 
-  public isProduction(): boolean {
-    const mode = this.getValue('MODE', false);
-    const nodeEnv = this.getValue('NODE_ENV', false);
-    return mode === 'production' || nodeEnv === 'production' || (mode !== 'DEV' && nodeEnv !== 'development');
-  }
+  // public isProduction(): boolean {
+  //   const mode = this.getValue('MODE', false);
+  //   const nodeEnv = this.getValue('NODE_ENV', false);
+  //   return mode === 'production' || nodeEnv === 'production' || (mode !== 'DEV' && nodeEnv !== 'development');
+  // }
 
   public getTypeOrmConfig(): TypeOrmModuleOptions {
     return {
