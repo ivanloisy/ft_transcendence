@@ -30,7 +30,11 @@ export class ConfigService {
   // public isProduction(): boolean {
   //   const mode = this.getValue('MODE', false);
   //   const nodeEnv = this.getValue('NODE_ENV', false);
-  //   return mode === 'production' || nodeEnv === 'production' || (mode !== 'DEV' && nodeEnv !== 'development');
+  //   return (
+  //     mode === 'production' ||
+  //     nodeEnv === 'production' ||
+  //     (mode !== 'DEV' && nodeEnv !== 'development')
+  //   );
   // }
 
   public getTypeOrmConfig(): TypeOrmModuleOptions {
