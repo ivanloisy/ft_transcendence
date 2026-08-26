@@ -26,9 +26,10 @@ export class ConfigService {
     return this.getValue('FRONTEND_URL', false) || 'http://localhost:8080';
   }
 
-  public isProduction() {
+  public isProduction(): boolean {
     const mode = this.getValue('MODE', false);
-    return mode != 'DEV';
+    const nodeEnv = this.getValue('NODE_ENV', false);
+    return mode === 'production' || nodeEnv === 'production' || (mode !== 'DEV' && nodeEnv !== 'development');
   }
 
   public getTypeOrmConfig(): TypeOrmModuleOptions {

@@ -19,9 +19,9 @@ all: build
 # Initialize production data directories in /var/lib/transcendence (or custom DATA_PATH)
 init:
 	@echo "$(COLOR_INFO)Checking production data directories in $(DATA_PATH)...$(COLOR_RESET)"
-	@if [ ! -d "$(DATA_PATH)/postgres" ] || [ ! -d "$(DATA_PATH)/pgadmin" ] || [ ! -d "$(DATA_PATH)/uploads" ]; then \
+	@if [ ! -d "$(DATA_PATH)/postgres" ] || [ ! -d "$(DATA_PATH)/uploads" ]; then \
 		echo "$(COLOR_WARN)Creating $(DATA_PATH) directories (requires sudo)...$(COLOR_RESET)"; \
-		sudo mkdir -p $(DATA_PATH)/postgres $(DATA_PATH)/pgadmin $(DATA_PATH)/uploads; \
+		sudo mkdir -p $(DATA_PATH)/postgres $(DATA_PATH)/uploads; \
 		sudo chmod -R 775 $(DATA_PATH); \
 	fi
 
