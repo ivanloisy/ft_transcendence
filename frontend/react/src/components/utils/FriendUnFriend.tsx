@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAuthData } from "../../contexts/AuthProviderContext";
 import Request from './Requests';
-import { io } from "socket.io-client";
+import { useWebsocketUpdate } from "../../contexts/WebSocketContextUpdate";
 import {FriendUserReceiveDto} from "../../dtos/friend-user.dto";
-
-const socket = io('http://localhost:3000/update')
+import { BACKEND_URL } from "../../config";
 
 const FriendUnFriend = ({ auth_id }:{ auth_id: string }): JSX.Element => {
     const [status, setStatus] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const { user, friendsList, setError } = useAuthData();
-    //const socket = useContext(WebsocketContextUpdate);
+    const socket = useWebsocketUpdate();
 
     useEffect((): void => {
         const updateStatus = async (): Promise<void> => {
@@ -21,7 +20,7 @@ const FriendUnFriend = ({ auth_id }:{ auth_id: string }): JSX.Element => {
                         "GET",
                         {},
                         {},
-                        "http://localhost:3000/user/" + auth_id + "/isfriend",
+                        `${BACKEND_URL}/user/` + auth_id + "/isfriend",
                     )
                     setStatus(res);
                     setLoading(false);

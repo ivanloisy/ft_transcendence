@@ -10,11 +10,9 @@ import {
 import Request from "../components/utils/Requests";
 import { AuthType, ChanType, UserType } from "../types";
 import { NavigateFunction, useLocation, useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
-import {FriendUserSendDto} from "../dtos/friend-user.dto";
-import { BACKEND_URL, WS_URL } from "../config";
-
-const socket = io(`${WS_URL}/update`)
+import { FriendUserSendDto } from "../dtos/friend-user.dto";
+import { BACKEND_URL } from "../config";
+import { socket } from "./WebSocketContextUpdate";
 export const AuthContext = createContext<any>({});
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(false);

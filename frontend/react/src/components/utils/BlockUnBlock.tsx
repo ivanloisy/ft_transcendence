@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { useAuthData } from "../../contexts/AuthProviderContext";
 import Request from './Requests';
-import { io } from "socket.io-client";
+import { useWebsocketUpdate } from "../../contexts/WebSocketContextUpdate";
 import {BlockedUserReceiveDto, BlockedUserSendDto} from "../../dtos/blocked-user.dto";
 import "../../styles/components/utils/userCards.css";
-
-const socket = io('http://localhost:3000/update')
+import { BACKEND_URL } from "../../config";
 
 const BlockUnBlock = ({ auth_id }:{ auth_id : string }): JSX.Element => {
     const [status, setStatus] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const { user, blockedList, updateBlockedList, setError } = useAuthData();
-    //const socket = useContext(WebsocketContextUpdate);
+    const socket = useWebsocketUpdate();
 
     useEffect((): void => {
         const updateStatus = async (): Promise<void> => {
@@ -22,7 +21,7 @@ const BlockUnBlock = ({ auth_id }:{ auth_id : string }): JSX.Element => {
                         "GET",
                         {},
                         {},
-                        "http://localhost:3000/user/" + auth_id + "/isblocked",
+                        `${BACKEND_URL}/user/` + auth_id + "/isblocked",
                     )
                     setStatus(res);
                     setLoading(false);

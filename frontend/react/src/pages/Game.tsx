@@ -3,10 +3,9 @@ import { socket } from '../contexts/WebSocketContextGame';
 import Request from "../components/utils/Requests"
 import '../styles/pages/game.css'
 import ModalMatchWaiting from '../components/utils/ModalMatchWaiting';
-import { io } from 'socket.io-client';
 import { AuthContext } from '../contexts/AuthProviderContext';
-import { BACKEND_URL, WS_URL } from '../config';
-const updateSocket = io(`${WS_URL}/update`);
+import { BACKEND_URL } from '../config';
+import { updateSocket } from '../contexts/WebSocketContextUpdate';
 
 let score1 = new Image();
 let score2 = new Image();

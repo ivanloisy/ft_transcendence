@@ -1,7 +1,6 @@
 import { Component } from "react";
 import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import Request from "./utils/Requests";
-import io from "socket.io-client";
 import HistoryCards from "./utils/HistoryCards";
 import "../styles/components/profil.css";
 import ModalChangeUsername from "./utils/ModalChangeUsername";
@@ -14,9 +13,8 @@ import Switch from "./utils/Switch";
 import { CreatePrivChanDto } from "../dtos/create-chan.dto";
 import { UserJoinChannelReceiveDto } from "../dtos/userjoinchannel.dto";
 import "../styles/components/utils/userCards.css";
-import { BACKEND_URL, WS_URL } from "../config";
-
-const socketChat = io(`${WS_URL}/chat`);
+import { BACKEND_URL } from "../config";
+import { socket as socketChat } from "../contexts/WebSocketContext";
 
 const BtnToChat = ({cb}:{cb: any}) => {
   const navigate = useNavigate();

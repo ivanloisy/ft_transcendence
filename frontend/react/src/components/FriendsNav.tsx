@@ -5,10 +5,10 @@ import { AuthContext } from "../contexts/AuthProviderContext";
 import '../styles/components/friendsnav.css';
 import DisplayFriendsList from "./utils/DisplayFriendsList";
 import { Alert } from "react-bootstrap";
-import { io } from "socket.io-client";
+import { socket } from "../contexts/WebSocketContextUpdate";
 import { FriendUserReceiveDto } from "../dtos/friend-user.dto";
+import { BACKEND_URL } from "../config";
 
-const socket = io('http://localhost:3000/update')
 class FriendsNav extends Component<{}, {
   uslist: Array<UserType>,
   filteredList: Array<UserType>,
@@ -74,7 +74,7 @@ class FriendsNav extends Component<{}, {
           'GET',
           {},
           {},
-          "http://localhost:3000/user/name/" + input.value
+          `${BACKEND_URL}/user/name/` + input.value
         )
         input.value = '';
         const response: FriendUserReceiveDto = {

@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import io from "socket.io-client";
 import Request from "./Requests";
 import "../../styles/components/utils/userCards.css";
 import { AuthContext } from "../../contexts/AuthProviderContext";
@@ -10,10 +9,9 @@ import ModalMatchInvite from "./ModalMatchInvite";
 import {UpdateUserGameDto} from "../../dtos/updateUser.dto";
 import {CreatePrivChanDto} from "../../dtos/create-chan.dto";
 import {UserJoinChannelReceiveDto} from "../../dtos/userjoinchannel.dto";
-import { BACKEND_URL, WS_URL } from "../../config";
-
-const socket = io(`${WS_URL}/update`);
-const socketChat = io(`${WS_URL}/chat`);
+import { BACKEND_URL } from "../../config";
+import { socket } from "../../contexts/WebSocketContextUpdate";
+import { socket as socketChat } from "../../contexts/WebSocketContext";
 
 const BtnToChat = ({cb}:{cb: any}) => {
   const navigate = useNavigate();

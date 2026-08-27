@@ -1,13 +1,18 @@
-import { createContext } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 import io, { Socket } from 'socket.io-client';
-import { WebsocketContext } from "./WebSocketContext";
 import { WS_URL } from '../config';
 
-export const socket = io(`${WS_URL}/update`);
+export const socket: Socket = io(`${WS_URL}/update`);
+export const updateSocket: Socket = socket;
+
 export const WebsocketContextUpdate = createContext<Socket>(socket);
-export const WebsocketProvider = WebsocketContext.Provider;
-/*
-export const WebsocketUpdateProvider = ({ children }:{ children:JSX.Element }) => {
-    return <WebsocketContextUpdate.Provider value={socket}>{ children }</WebsocketContextUpdate.Provider>;
-}
- */
+
+export const useWebsocketUpdate = (): Socket => useContext(WebsocketContextUpdate);
+
+export const WebsocketUpdateProvider = ({ children }: { children: ReactNode }) => {
+    return (
+        <WebsocketContextUpdate.Provider value={socket}>
+            {children}
+        </WebsocketContextUpdate.Provider>
+    );
+};
